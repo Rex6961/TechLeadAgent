@@ -1,0 +1,38 @@
+[project]
+name = "core"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Rex6961",email = "aon777ar@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "google-adk (>=1.19.0,<2.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "core", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "ruff (>=0.14.7,<0.15.0)",
+    "mypy (>=1.19.0,<2.0.0)"
+]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+ignore_missing_imports = true
+explicit_package_bases = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I"]

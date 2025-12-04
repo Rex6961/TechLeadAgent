@@ -22,12 +22,16 @@ def dynamic_persona_provider(context: ReadonlyContext) -> str:
     Returns:
         str: The generated system instruction.
     """
-    use_role = context.state.get("user:role", "Intern")
+    user_role = context.state.get("user:role", "Intern")
     current_topic = context.state.get("current_topic", "General Chat")
+    app_maintenance_mode = context.state.get("app:maintenance_mode", False)
 
+    if app_maintenance_mode:
+        return "System under maintenance. Try again later."
+    
     return (
         f"You are a strict Senior Tech Lead. "
-        f"You are currently mentoring a user with the rank of '{use_role}'. "
+        f"You are currently mentoring a user with the rank of '{user_role}'. "
         f"The current discussion topic is locked to: '{current_topic}'. "
         f"If the user asks about anything else, politely refuse and steer back to {current_topic}. "
         f"Keep answers concise and technical."
@@ -55,7 +59,8 @@ async def main() -> None:
 
     initial_state = {
         "user:role": "Junior Developer",
-        "current_topic": "Memory Management"
+        "current_topic": "Memory Management",
+        "app:maintenance_mode": True
     }
 
     print(f"--- INITIALIZING SESSION: {initial_state} ---")
@@ -70,7 +75,8 @@ async def main() -> None:
 
     prompts = [
         "Hi, can you help me with Python?",
-        "Okay, tell me about Stack and Heap."
+        "Okay, tell me about Stack and Heap.",
+        "Tell me a some joke on Russian language."
     ]
 
     for prompt in prompts:
